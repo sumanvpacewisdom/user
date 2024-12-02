@@ -5,7 +5,8 @@ let tableData = new table()
 let enviromentVariables = {
 	APPLICATION_PORT: {
 		message: 'Required port no',
-		optional: false,
+		optional: true,
+		default: '3001',
 	},
 	APPLICATION_HOST: {
 		message: 'Required host',
@@ -25,11 +26,18 @@ let enviromentVariables = {
 	},
 	APP_NAME: {
 		message: 'Application Name',
-		optional: false,
+		optional: true,
+		default: 'MentorED',
 	},
 	REGISTRATION_EMAIL_TEMPLATE_CODE: {
 		message: 'Required registration email template code',
-		optional: false,
+		optional: true,
+		default: 'registration',
+	},
+	REGISTRATION_OTP_EMAIL_TEMPLATE_CODE: {
+		message: 'Required registration otp email template code',
+		optional: true,
+		default: 'registrationotp',
 	},
 	OTP_EMAIL_TEMPLATE_CODE: {
 		message: 'Required otp email template code',
@@ -41,79 +49,38 @@ let enviromentVariables = {
 	},
 	KAFKA_GROUP_ID: {
 		message: 'Required kafka group id',
-		optional: false,
+		optional: true,
+		default: 'user',
 	},
 	KAFKA_TOPIC: {
 		message: 'Required kafka topic to consume from',
 		optional: true,
+		default: 'mentoring.topic',
 	},
 	NOTIFICATION_KAFKA_TOPIC: {
 		message: 'Required kafka topic',
-		optional: false,
-	},
-	CLOUD_STORAGE: {
-		message: 'Required cloud storage type ex: AWS/GCP/AZURE',
-		optional: false,
-	},
-	GCP_PATH: {
-		message: 'Required gcp file path ex: gcp.json',
-		optional: process.env.CLOUD_STORAGE === 'GCP' ? false : true,
-	},
-	DEFAULT_GCP_BUCKET_NAME: {
-		message: 'Required gcp bucket name',
-		optional: process.env.CLOUD_STORAGE === 'GCP' ? false : true,
-	},
-	GCP_PROJECT_ID: {
-		message: 'Required gcp project id',
-		optional: process.env.CLOUD_STORAGE === 'GCP' ? false : true,
-	},
-	AWS_ACCESS_KEY_ID: {
-		message: 'Required aws access key id',
-		optional: process.env.CLOUD_STORAGE === 'AWS' ? false : true,
-	},
-	AWS_SECRET_ACCESS_KEY: {
-		message: 'Required aws secret access key',
-		optional: process.env.CLOUD_STORAGE === 'AWS' ? false : true,
-	},
-	AWS_BUCKET_REGION: {
-		message: 'Required aws bucket region',
-		optional: process.env.CLOUD_STORAGE === 'AWS' ? false : true,
-	},
-	AWS_BUCKET_ENDPOINT: {
-		message: 'Required aws bucket endpoint',
-		optional: process.env.CLOUD_STORAGE === 'AWS' ? false : true,
-	},
-	DEFAULT_AWS_BUCKET_NAME: {
-		message: 'Required aws bucket name',
-		optional: process.env.CLOUD_STORAGE === 'AWS' ? false : true,
-	},
-	AZURE_ACCOUNT_NAME: {
-		message: 'Required azure account name',
-		optional: process.env.CLOUD_STORAGE === 'AZURE' ? false : true,
-	},
-	AZURE_ACCOUNT_KEY: {
-		message: 'Required azure account key',
-		optional: process.env.CLOUD_STORAGE === 'AZURE' ? false : true,
-	},
-	DEFAULT_AZURE_CONTAINER_NAME: {
-		message: 'Required azure container name',
-		optional: process.env.CLOUD_STORAGE === 'AZURE' ? false : true,
+		optional: true,
+		default: 'notificationtopic',
 	},
 	ACCESS_TOKEN_EXPIRY: {
 		message: 'Required access token expiry',
-		optional: false,
+		optional: true,
+		default: '1440m',
 	},
 	REFRESH_TOKEN_EXPIRY: {
 		message: 'Required refresh token expiry',
-		optional: false,
+		optional: true,
+		default: 7,
 	},
 	API_DOC_URL: {
 		message: 'Required api doc url',
-		optional: false,
+		optional: true,
+		default: '/user/api-doc',
 	},
 	INTERNAL_CACHE_EXP_TIME: {
 		message: 'Internal Cache Expiry Time',
-		optional: false,
+		optional: true,
+		default: 86400,
 	},
 	REDIS_HOST: {
 		message: 'Redis Host Url',
@@ -121,39 +88,23 @@ let enviromentVariables = {
 	},
 	KEY: {
 		message: 'Key is missing for email encryption',
-		optional: false,
+		optional: true,
+		default: 'E/m3RD/aM3Ed3lLfYVcKizakG9R+bFybAPZSLjIP2hY=',
 	},
 	IV: {
 		message: 'iv is missing for email encryption',
-		optional: false,
-	},
-	OCI_ACCESS_KEY_ID: {
-		message: 'Required oci access key id',
-		optional: process.env.CLOUD_STORAGE === 'OCI' ? false : true,
-	},
-	OCI_SECRET_ACCESS_KEY: {
-		message: 'Required oci secret access key',
-		optional: process.env.CLOUD_STORAGE === 'OCI' ? false : true,
-	},
-	OCI_BUCKET_REGION: {
-		message: 'Required oci bucket region',
-		optional: process.env.CLOUD_STORAGE === 'OCI' ? false : true,
-	},
-	OCI_BUCKET_ENDPOINT: {
-		message: 'Required oci bucket endpoint',
-		optional: process.env.CLOUD_STORAGE === 'OCI' ? false : true,
-	},
-	DEFAULT_OCI_BUCKET_NAME: {
-		message: 'Required oci bucket name',
-		optional: process.env.CLOUD_STORAGE === 'OCI' ? false : true,
+		optional: true,
+		default: 'LHYOA5YnTonqcgrm15k3/Q==',
 	},
 	ERROR_LOG_LEVEL: {
 		message: 'Required Error log level',
-		optional: false,
+		optional: true,
+		default: 'silly',
 	},
 	DISABLE_LOG: {
 		message: 'Required disable log level',
-		optional: false,
+		optional: true,
+		default: 'false',
 	},
 	ADMIN_SECRET_CODE: {
 		message: 'Required Admin secret code',
@@ -161,8 +112,8 @@ let enviromentVariables = {
 	},
 	DEFAULT_ORGANISATION_CODE: {
 		message: 'Required default organisation code',
-		optional: false,
-		default: 'sl',
+		optional: true,
+		default: 'default_code',
 	},
 	MENTORING_SERVICE_URL: {
 		message: 'Required Mentoring Service Url',
@@ -170,28 +121,33 @@ let enviromentVariables = {
 	},
 	ADMIN_INVITEE_UPLOAD_EMAIL_TEMPLATE_CODE: {
 		message: 'Required admin upload invitee email template code',
-		optional: false,
+		optional: true,
+		default: 'invitee_upload_status',
 	},
 	DEFAULT_QUEUE: {
 		message: 'Required default queue',
-		optional: false,
+		optional: true,
+		default: 'defaultUser-queue',
 	},
 	DEFAULT_ROLE: {
 		message: 'Required default role',
-		optional: false,
+		optional: true,
+		default: 'mentee',
 	},
 	SAMPLE_CSV_FILE_PATH: {
 		message: 'Required sample csv file path',
-		optional: false,
+		optional: true,
 		default: 'sample/bulk_user_creation.csv',
 	},
 	ORG_ADMIN_INVITATION_EMAIL_TEMPLATE_CODE: {
 		message: 'Required org admin invitation email template code',
-		optional: false,
+		optional: true,
+		default: 'invite_org_admin',
 	},
 	DEFAULT_ORG_ID: {
 		message: 'Default organization ID, Run seeder `insertDefaultOrg` to obtain it.',
-		optional: false,
+		optional: true,
+		default: 1,
 	},
 	PORTAL_URL: {
 		message: 'Required portal url',
@@ -203,25 +159,38 @@ let enviromentVariables = {
 	},
 	SCHEDULER_SERVICE_BASE_URL: {
 		message: 'Required scheduler service base url',
-		optional: false,
+		optional: true,
+		default: '/scheduler/',
 	},
 	REFRESH_VIEW_INTERVAL: {
 		message: 'Interval to refresh views in milliseconds',
-		optional: false,
-		default: 540000,
+		optional: true,
+		default: 30000,
 	},
 	EMAIL_ID_ENCRYPTION_KEY: {
 		message: 'Required Email ID Encryption Key',
-		optional: false,
+		optional: true,
+		default: '9bbf4698e081176b4e38c3f04f9c0cff6ae80b1960e5ac868cc234ac8537aa66',
 	},
 	EMAIL_ID_ENCRYPTION_IV: {
 		message: 'Required Email ID Encryption IV',
-		optional: false,
+		optional: true,
+		default: 'a390328e496f025249a88384f318a536',
 	},
 	EMAIL_ID_ENCRYPTION_ALGORITHM: {
 		message: 'Required Email ID Encryption Algorithm',
-		optional: false,
+		optional: true,
 		default: 'aes-256-cbc',
+	},
+	ENABLE_EMAIL_OTP_VERIFICATION: {
+		message: 'Required Email otp verification ',
+		optional: true,
+		default: 'false',
+	},
+	ENABLE_LOG: {
+		message: 'Required ENABLE LOG ',
+		optional: true,
+		default: 'true',
 	},
 	EVENT_ORG_LISTENER_URLS: {
 		message: 'Required List Of Org Event Listener Urls',
@@ -229,7 +198,8 @@ let enviromentVariables = {
 	},
 	EVENT_ENABLE_ORG_EVENTS: {
 		message: 'Required Enable Org Events Flag',
-		optional: false,
+		optional: true,
+		default: 'true',
 	},
 	GENERIC_INVITATION_EMAIL_TEMPLATE_CODE: {
 		message: 'Required generic invitation email template code',
@@ -244,26 +214,28 @@ let enviromentVariables = {
 	PASSWORD_POLICY_REGEX: {
 		message: 'Required password policy',
 		optional: true,
-		default: '^.{8,}$',
+		default: '^(?=(?:.*[A-Z]){2})(?=(?:.*[0-9]){2})(?=(?:.*[!@#%$&()\\-`.+,]){3}).{11,}$',
 	},
 	PASSWORD_POLICY_MESSAGE: {
 		message: 'Required password policy message',
 		optional: true,
-		default: 'Password must have at least 8 characters long',
+		default:
+			'Password must have at least one uppercase letter, one number, one special character, and be at least 10 characters long',
 	},
 	DOWNLOAD_URL_EXPIRATION_DURATION: {
 		message: 'Required downloadable url expiration time',
 		optional: true,
-		default: 3600000,
+		default: 300000,
 	},
 	ALLOWED_IDLE_TIME: {
 		message: 'Require allowed idle time',
 		optional: true,
-		default: 0,
+		default: 3600,
 	},
 	CHANGE_PASSWORD_TEMPLATE_CODE: {
 		message: 'Required change password email template code',
-		optional: false,
+		optional: true,
+		default: 'change_password',
 	},
 	CAPTCHA_ENABLE: {
 		message: 'Required CAPTCHA ENABLE true or false',
@@ -271,32 +243,124 @@ let enviromentVariables = {
 	},
 	CAPTCHA_SERVICE: {
 		message: 'Required CAPTCHA SERVICE',
-		optional: true,
+		optional: process.env.CAPTCHA_ENABLE === 'false' ? true : false,
 		default: 'googleRecaptcha',
+	},
+	CLEAR_INTERNAL_CACHE: {
+		message: 'Required CLEAR INTERNAL CACHE ',
+		optional: true,
+		default: 'userinternal',
 	},
 	RECAPTCHA_SECRET_KEY: {
 		message: 'Required CAPTCHA SERVICE secret key',
-		optional: false,
+		optional: process.env.CAPTCHA_ENABLE === 'false' ? true : false,
 	},
 	GOOGLE_RECAPTCHA_HOST: {
 		message: 'Required CAPTCHA Host IP',
-		optional: true,
+		optional: process.env.CAPTCHA_ENABLE === 'false' ? true : false,
 		default: 'https://www.google.com',
 	},
 	GOOGLE_RECAPTCHA_URL: {
 		message: 'Required CAPTCHA SERVICE API URL',
-		optional: true,
+		optional: process.env.CAPTCHA_ENABLE === 'false' ? true : false,
 		default: '/recaptcha/api/siteverify',
 	},
-	SIGNED_URL_EXPIRY_IN_MILLISECONDS: {
-		message: 'Required signed url expiration time in milliseconds',
+	SIGNED_URL_EXPIRY_DURATION: {
+		message: 'Required signed url expiration time in seconds',
 		optional: true,
-		default: 3600000,
+		default: 900,
 	},
 	ALLOWED_ACTIVE_SESSIONS: {
 		message: 'Require allowed active sessions',
 		optional: true,
 		default: 0,
+	},
+	CLOUD_STORAGE_PROVIDER: {
+		message: 'Require cloud storage provider, in azure,aws, gcloud,oci and s3',
+		optional: false,
+	},
+	CLOUD_STORAGE_SECRET: {
+		message: 'Require client storage provider identity',
+		optional: false,
+	},
+	CLOUD_STORAGE_BUCKETNAME: {
+		message: 'Require client storage bucket name',
+		optional: false,
+	},
+	CLOUD_STORAGE_BUCKET_TYPE: {
+		message: 'Require storage bucket type',
+		optional: false,
+	},
+	PUBLIC_ASSET_BUCKETNAME: {
+		message: 'Require asset storage bucket name',
+		optional: false,
+	},
+	CLOUD_STORAGE_REGION: {
+		message: 'Require storage region',
+		optional: true,
+	},
+	CLOUD_ENDPOINT: {
+		message: 'Require asset storage endpoint',
+		optional: true,
+	},
+	CLOUD_STORAGE_ACCOUNTNAME: {
+		message: 'Require account name',
+		optional: false,
+	},
+	APPLICATION_BASE_URL: {
+		message: 'Require Base URL',
+		optional: true,
+		default: '/user',
+	},
+	SCHEDULER_PERIODIC_JOB_NAME_USER_MVIEWS: {
+		message: 'Require Scheduler service periodic job name',
+		optional: true,
+		default: 'project_users_repeatable_view_job',
+	},
+	SCHEDULER_JOB_NAME_USER_MVIEWS: {
+		message: 'Require Scheduler service job name',
+		optional: true,
+		default: 'BuildMaterializedViewsprojectUsers',
+	},
+	MENTEE_INVITATION_EMAIL_TEMPLATE_CODE: {
+		message: 'Require email code for mentee invitation',
+		optional: true,
+		default: 'invite_mentee',
+	},
+	MENTOR_INVITATION_EMAIL_TEMPLATE_CODE: {
+		message: 'Require email code for mentor invitation',
+		optional: true,
+		default: 'invite_mentor',
+	},
+	MENTOR_REQUEST_ACCEPTED_EMAIL_TEMPLATE_CODE: {
+		message: 'Require email code for mentor request accepted',
+		optional: true,
+		default: 'mentor_request_accepted',
+	},
+	MENTOR_REQUEST_REJECTED_EMAIL_TEMPLATE_CODE: {
+		message: 'Require email code for mentor request rejected',
+		optional: true,
+		default: 'mentor_request_rejected',
+	},
+	OTP_EMAIL_TEMPLATE_CODE: {
+		message: 'Require email code for otp',
+		optional: true,
+		default: 'emailotp',
+	},
+	OTP_EXP_TIME: {
+		message: 'Require otp expire time',
+		optional: true,
+		default: 86400,
+	},
+	RATING_KAFKA_TOPIC: {
+		message: 'Require kafka topic for rating',
+		optional: true,
+		default: 'mentoring.rating',
+	},
+	SIGNED_URL_EXPIRY_IN_MILLISECONDS: {
+		message: 'Require signed url expiry in milliseconds',
+		optional: true,
+		default: 120000,
 	},
 }
 
